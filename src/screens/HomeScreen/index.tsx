@@ -5,9 +5,7 @@ import styles from './styles';
 
 import products from '../../data/products';
 
-interface componentNameProps {}
-
-const HomeScreen = (props: componentNameProps) => {
+const HomeScreen = ({searchValue}: {searchValue: string}) => {
   return (
     <View style={styles.page}>
       {/*render product component*/}

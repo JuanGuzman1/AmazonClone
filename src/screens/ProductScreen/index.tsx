@@ -6,6 +6,7 @@ import product from '../../data/product';
 import QuantitySelector from '../../components/QuantitySelector';
 import Button from '../../components/Button';
 import ImageCarousel from '../../components/ImageCarousel';
+import { useRoute } from '@react-navigation/core';
 
 interface componentNameProps {}
 
@@ -14,6 +15,8 @@ const ProductScreen = (props: componentNameProps) => {
     product.options ? product.options[0] : null,
   );
   const [quantity, setQuantity] = useState(1);
+
+  const route = useRoute();
 
   return (
     <ScrollView style={styles.root}>

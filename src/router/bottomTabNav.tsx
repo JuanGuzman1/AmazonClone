@@ -1,8 +1,9 @@
 import * as React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/HomeScreen';
-import ShoppingCartScreen from '../screens/ShoppingCartScreen';
 import Entypo from 'react-native-vector-icons/Entypo';
+import HomeStack from './HomeStack';
+import ShoppingCartStack from './ShoppingCartStack';
 
 interface componentNameProps {}
 
@@ -17,7 +18,7 @@ const BottomTabNav = (props: componentNameProps) => {
         activeTintColor: '#e47911',
       }}>
       <Tab.Screen
-        component={HomeScreen}
+        component={HomeStack}
         name="Home"
         options={{
           tabBarIcon: ({color}) => (
@@ -35,7 +36,7 @@ const BottomTabNav = (props: componentNameProps) => {
         }}
       />
       <Tab.Screen
-        component={ShoppingCartScreen}
+        component={ShoppingCartStack}
         name="shoppingCart"
         options={{
           tabBarIcon: ({color}) => (
