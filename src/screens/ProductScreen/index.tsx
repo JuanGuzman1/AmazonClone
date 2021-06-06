@@ -1,29 +1,63 @@
-import React, {useState} from 'react';
-import {Text, View, ScrollView} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {Text, View, ScrollView, ActivityIndicator} from 'react-native';
 import styles from './styles';
 import {Picker} from '@react-native-picker/picker';
-import product from '../../data/product';
 import QuantitySelector from '../../components/QuantitySelector';
 import Button from '../../components/Button';
 import ImageCarousel from '../../components/ImageCarousel';
-import { useRoute } from '@react-navigation/core';
+import {useRoute} from '@react-navigation/core';
+import {DataStore, Auth} from 'aws-amplify';
+import {Product, CartProduct} from '../../models';
 
 interface componentNameProps {}
 
 const ProductScreen = (props: componentNameProps) => {
-  const [selectedOption, setSelectedOption] = useState(
-    product.options ? product.options[0] : null,
-  );
+  const [product, setProduct] = useState<Product | undefined>(undefined);
+  const [selectedOption, setSelectedOption] = useState<string | undefined>(undefined);
   const [quantity, setQuantity] = useState(1);
 
   const route = useRoute();
+
+  useEffect(() => {
+    if (!route.params?.id) {
+      return;
+    }
+    DataStore.query(Product, route.params.id).then(setProduct);
+  }, [route.params?.id]);
+
+  useEffect(() => {
+    if (product?.options) {
+      setSelectedOption(product.options[0]);
+    }
+  }, []);
+
+  const onAddToCart = async () => {
+    const userData = await Auth.currentAuthenticatedUser();
+
+    if(!product || !userData){
+      return;
+    }
+
+    const newCartProduct = new CartProduct({
+      userSub: userData.attributes.sub,
+      quantity,
+      option: selectedOption,
+      productID: route.params.id,
+    });
+
+    DataStore.save(newCartProduct);
+  };
+
+  if (!product) {
+    return <ActivityIndicator />;
+  }
 
   return (
     <ScrollView style={styles.root}>
       <Text style={styles.title}>{product.title}</Text>
 
       {/*image carousel */}
-      <ImageCarousel images={product.images}/>
+      <ImageCarousel images={product.images} />
 
       {/*option selector */}
       <Picker
@@ -35,9 +69,9 @@ const ProductScreen = (props: componentNameProps) => {
       </Picker>
       {/*price*/}
       <Text style={styles.price}>
-        from ${product.price}
+        from ${product.price.toFixed(2)}
         {product.oldPrice && (
-          <Text style={styles.oldPrice}> ${product.oldPrice}</Text>
+          <Text style={styles.oldPrice}> ${product.oldPrice.toFixed(2)}</Text>
         )}
       </Text>
       {/*description */}
@@ -45,7 +79,7 @@ const ProductScreen = (props: componentNameProps) => {
       {/*quantity selector*/}
       <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
       {/*button*/}
-      <Button text={'Add To Cart'} onPress={() => {}} />
+      <Button text={'Add To Cart'} onPress={onAddToCart} />
       <Button text={'Buy Now'} onPress={() => {}} />
     </ScrollView>
   );

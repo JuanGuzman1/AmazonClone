@@ -15,6 +15,12 @@ import {SafeAreaView, StatusBar, useColorScheme} from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Router from './src/router';
 
+import Amplify from 'aws-amplify';
+import config from './src/aws-exports';
+Amplify.configure(config);
+
+import {withAuthenticator} from 'aws-amplify-react-native';
+
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -31,4 +37,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default withAuthenticator(App);
