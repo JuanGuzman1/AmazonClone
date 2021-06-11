@@ -8,6 +8,7 @@ import ImageCarousel from '../../components/ImageCarousel';
 import {useRoute} from '@react-navigation/core';
 import {DataStore, Auth} from 'aws-amplify';
 import {Product, CartProduct} from '../../models';
+import {useNavigation} from '@react-navigation/native';
 
 interface componentNameProps {}
 
@@ -16,6 +17,7 @@ const ProductScreen = (props: componentNameProps) => {
   const [selectedOption, setSelectedOption] = useState<string | undefined>(undefined);
   const [quantity, setQuantity] = useState(1);
 
+  const navigation = useNavigation();
   const route = useRoute();
 
   useEffect(() => {
@@ -45,7 +47,8 @@ const ProductScreen = (props: componentNameProps) => {
       productID: route.params.id,
     });
 
-    DataStore.save(newCartProduct);
+    await DataStore.save(newCartProduct);
+    navigation.navigate('shoppingCart');
   };
 
   if (!product) {

@@ -12,6 +12,9 @@ import {Picker} from '@react-native-picker/picker';
 import countryList from 'country-list';
 import styles from './styles';
 import Button from '../../components/Button';
+import {DataStore, Auth} from 'aws-amplify';
+import {Order, OrderProduct, CartProduct} from '../../models';
+import {useNavigation} from '@react-navigation/native';
 
 interface componentNameProps {}
 
@@ -25,6 +28,44 @@ const AddressScreen = (props: componentNameProps) => {
   const [addressError, setAddressError] = useState('');
 
   const [city, setCity] = useState('');
+  const navigation = useNavigation();
+  const saveOrder = async () => {
+    //get user details
+    const userData = await Auth.currentAuthenticatedUser();
+
+    //create a new order
+    const newOrder = await DataStore.save(
+      new Order({
+        userSub: userData.attributes.sub,
+        fullname: fullname,
+        phoneNumber: phone,
+        country,
+        city: city,
+        address,
+      }),
+    );
+    //fetch all car items
+    const cartItems = await DataStore.query(CartProduct, cp =>
+      cp.userSub('eq', userData.attributes.sub),
+    );
+    //attach all the items to the order
+    await Promise.all(
+      cartItems.map(carItem =>
+        DataStore.save(
+          new OrderProduct({
+            quantity: carItem.quantity,
+            option: carItem.option,
+            productID: carItem.productID,
+            orderID: newOrder.id,
+          }),
+        ),
+      ),
+    );
+    //delete all cart items
+    await Promise.all(cartItems.map(carItem => DataStore.delete(carItem)));
+    //redirect home
+    navigation.navigate('home');
+  };
 
   const onCheckout = () => {
     if (!!addressError) {
@@ -47,6 +88,8 @@ const AddressScreen = (props: componentNameProps) => {
     if (address.length < 3) {
       setAddressError('Address is too short');
     }
+
+    saveOrder();
   };
 
   return (

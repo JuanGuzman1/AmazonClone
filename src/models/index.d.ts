@@ -29,3 +29,27 @@ export declare class CartProduct {
   constructor(init: ModelInit<CartProduct>);
   static copyOf(source: CartProduct, mutator: (draft: MutableModel<CartProduct>) => MutableModel<CartProduct> | void): CartProduct;
 }
+
+export declare class OrderProduct {
+  readonly id: string;
+  readonly quantity: number;
+  readonly option?: string;
+  readonly productID: string;
+  readonly product?: Product;
+  readonly orderID: string;
+  readonly order?: Order;
+  constructor(init: ModelInit<OrderProduct>);
+  static copyOf(source: OrderProduct, mutator: (draft: MutableModel<OrderProduct>) => MutableModel<OrderProduct> | void): OrderProduct;
+}
+
+export declare class Order {
+  readonly id: string;
+  readonly userSub: string;
+  readonly fullname: string;
+  readonly phoneNumber?: string;
+  readonly country?: string;
+  readonly city?: string;
+  readonly address?: string;
+  constructor(init: ModelInit<Order>);
+  static copyOf(source: Order, mutator: (draft: MutableModel<Order>) => MutableModel<Order> | void): Order;
+}
