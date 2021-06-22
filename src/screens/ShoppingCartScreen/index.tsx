@@ -89,7 +89,7 @@ const ShoppingCartScreen = (props: componentNameProps) => {
   );
 
   const onCheckout = () => {
-    navigation.navigate('address');
+    navigation.navigate('address',{totalPrice});
   };
 
   if (cartProducts.filter(cp => !cp.product).length !== 0) {

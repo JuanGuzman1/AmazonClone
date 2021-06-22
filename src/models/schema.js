@@ -351,6 +351,19 @@ export const schema = {
         }
     },
     "enums": {},
-    "nonModels": {},
-    "version": "5aaa917b4479b59c249273158a6effbd"
+    "nonModels": {
+        "PaymentIntent": {
+            "name": "PaymentIntent",
+            "fields": {
+                "clientSecret": {
+                    "name": "clientSecret",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                }
+            }
+        }
+    },
+    "version": "779999a8359a2eab8da83e527fb4595d"
 };

@@ -19,6 +19,8 @@ import Amplify from 'aws-amplify';
 import config from './src/aws-exports';
 Amplify.configure(config);
 
+import {StripeProvider} from '@stripe/stripe-react-native';
+
 import {withAuthenticator} from 'aws-amplify-react-native';
 
 const App = () => {
@@ -32,7 +34,12 @@ const App = () => {
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <Router />
+      <StripeProvider
+        publishableKey={
+          'pk_test_51J2o63INbXUH9eYLFjloZ8cYG2FIfyN1MH4ZVcsFyoWU8UAd3uBWQ4MSqS1lM8vEI4KIMnI4D7U2bsbK9KYbyUqG00jWqpajnU'
+        }>
+        <Router />
+      </StripeProvider>
     </SafeAreaView>
   );
 };

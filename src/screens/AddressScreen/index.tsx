@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   View,
@@ -12,9 +12,14 @@ import {Picker} from '@react-native-picker/picker';
 import countryList from 'country-list';
 import styles from './styles';
 import Button from '../../components/Button';
-import {DataStore, Auth} from 'aws-amplify';
+import {DataStore, Auth, API, graphqlOperation} from 'aws-amplify';
 import {Order, OrderProduct, CartProduct} from '../../models';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {createPaymentIntent} from '../../graphql/mutations';
+import {
+  initPaymentSheet,
+  presentPaymentSheet,
+} from '@stripe/stripe-react-native';
 
 interface componentNameProps {}
 
@@ -28,7 +33,55 @@ const AddressScreen = (props: componentNameProps) => {
   const [addressError, setAddressError] = useState('');
 
   const [city, setCity] = useState('');
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+
   const navigation = useNavigation();
+  const route = useRoute();
+  const amount = Math.floor(route.params?.totalPrice * 100 || 0);
+
+  useEffect(() => {
+    fetchPaymentIntent();
+  }, []);
+
+  useEffect(() => {
+    if (clientSecret) {
+      initializePaymentSheet();
+    }
+  }, [clientSecret]);
+
+  const fetchPaymentIntent = async () => {
+    const response = await API.graphql(
+      graphqlOperation(createPaymentIntent, {amount}),
+    );
+    setClientSecret(response.data.createPaymentIntent.clientSecret);
+  };
+
+  const initializePaymentSheet = async () => {
+    if (!clientSecret) {
+      return;
+    }
+    const {error} = await initPaymentSheet({
+      paymentIntentClientSecret: clientSecret,
+    });
+    if (error) {
+      Alert.alert(error);
+    }
+  };
+
+  const openPayment = async () => {
+    if (!clientSecret) {
+      return;
+    }
+    const {error} = await presentPaymentSheet({clientSecret});
+
+    if (error) {
+      Alert.alert(error);
+    } else {
+      saveOrder();
+      Alert.alert('Success', 'Your order is confirmed');
+    }
+  };
+
   const saveOrder = async () => {
     //get user details
     const userData = await Auth.currentAuthenticatedUser();
@@ -64,7 +117,7 @@ const AddressScreen = (props: componentNameProps) => {
     //delete all cart items
     await Promise.all(cartItems.map(carItem => DataStore.delete(carItem)));
     //redirect home
-    navigation.navigate('home');
+    navigation.navigate('Home');
   };
 
   const onCheckout = () => {
@@ -82,14 +135,13 @@ const AddressScreen = (props: componentNameProps) => {
       Alert.alert('Please fill the phone field');
       return;
     }
+    openPayment();
   };
 
   const validateAddress = () => {
     if (address.length < 3) {
       setAddressError('Address is too short');
     }
-
-    saveOrder();
   };
 
   return (

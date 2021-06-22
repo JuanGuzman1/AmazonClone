@@ -2,6 +2,11 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
+export type PaymentIntent = {
+  __typename: "PaymentIntent",
+  clientSecret: string,
+};
+
 export type CreateProductInput = {
   id?: string | null,
   title: string,
@@ -97,21 +102,21 @@ export type ModelIntInput = {
 
 export type Product = {
   __typename: "Product",
-  id?: string,
-  title?: string,
+  id: string,
+  title: string,
   description?: string | null,
-  image?: string,
-  images?: Array< string >,
+  image: string,
+  images: Array< string >,
   options?: Array< string > | null,
-  avgRating?: number,
+  avgRating: number,
   ratings?: number | null,
-  price?: number,
+  price: number,
   oldPrice?: number | null,
-  _version?: number,
+  _version: number,
   _deleted?: boolean | null,
-  _lastChangedAt?: number,
-  createdAt?: string,
-  updatedAt?: string,
+  _lastChangedAt: number,
+  createdAt: string,
+  updatedAt: string,
 };
 
 export type UpdateProductInput = {
@@ -129,7 +134,7 @@ export type UpdateProductInput = {
 };
 
 export type DeleteProductInput = {
-  id?: string | null,
+  id: string,
   _version?: number | null,
 };
 
@@ -170,17 +175,17 @@ export type ModelIDInput = {
 
 export type CartProduct = {
   __typename: "CartProduct",
-  id?: string,
-  userSub?: string,
-  quantity?: number,
+  id: string,
+  userSub: string,
+  quantity: number,
   option?: string | null,
-  productID?: string,
-  _version?: number,
+  productID: string,
+  _version: number,
   _deleted?: boolean | null,
-  _lastChangedAt?: number,
-  createdAt?: string,
-  updatedAt?: string,
-  product?: Product,
+  _lastChangedAt: number,
+  createdAt: string,
+  updatedAt: string,
+  product?: Product | null,
 };
 
 export type UpdateCartProductInput = {
@@ -193,7 +198,7 @@ export type UpdateCartProductInput = {
 };
 
 export type DeleteCartProductInput = {
-  id?: string | null,
+  id: string,
   _version?: number | null,
 };
 
@@ -218,34 +223,34 @@ export type ModelOrderProductConditionInput = {
 
 export type OrderProduct = {
   __typename: "OrderProduct",
-  id?: string,
-  quantity?: number,
+  id: string,
+  quantity: number,
   option?: string | null,
-  productID?: string,
-  orderID?: string,
-  _version?: number,
+  productID: string,
+  orderID: string,
+  _version: number,
   _deleted?: boolean | null,
-  _lastChangedAt?: number,
-  createdAt?: string,
-  updatedAt?: string,
-  product?: Product,
-  order?: Order,
+  _lastChangedAt: number,
+  createdAt: string,
+  updatedAt: string,
+  product?: Product | null,
+  order?: Order | null,
 };
 
 export type Order = {
   __typename: "Order",
-  id?: string,
-  userSub?: string,
-  fullname?: string,
+  id: string,
+  userSub: string,
+  fullname: string,
   phoneNumber?: string | null,
   country?: string | null,
   city?: string | null,
   address?: string | null,
-  _version?: number,
+  _version: number,
   _deleted?: boolean | null,
-  _lastChangedAt?: number,
-  createdAt?: string,
-  updatedAt?: string,
+  _lastChangedAt: number,
+  createdAt: string,
+  updatedAt: string,
 };
 
 export type UpdateOrderProductInput = {
@@ -258,7 +263,7 @@ export type UpdateOrderProductInput = {
 };
 
 export type DeleteOrderProductInput = {
-  id?: string | null,
+  id: string,
   _version?: number | null,
 };
 
@@ -297,7 +302,7 @@ export type UpdateOrderInput = {
 };
 
 export type DeleteOrderInput = {
-  id?: string | null,
+  id: string,
   _version?: number | null,
 };
 
@@ -380,8 +385,19 @@ export type ModelOrderConnection = {
   startedAt?: number | null,
 };
 
+export type CreatePaymentIntentMutationVariables = {
+  amount: number,
+};
+
+export type CreatePaymentIntentMutation = {
+  createPaymentIntent:  {
+    __typename: "PaymentIntent",
+    clientSecret: string,
+  },
+};
+
 export type CreateProductMutationVariables = {
-  input?: CreateProductInput,
+  input: CreateProductInput,
   condition?: ModelProductConditionInput | null,
 };
 
@@ -407,7 +423,7 @@ export type CreateProductMutation = {
 };
 
 export type UpdateProductMutationVariables = {
-  input?: UpdateProductInput,
+  input: UpdateProductInput,
   condition?: ModelProductConditionInput | null,
 };
 
@@ -433,7 +449,7 @@ export type UpdateProductMutation = {
 };
 
 export type DeleteProductMutationVariables = {
-  input?: DeleteProductInput,
+  input: DeleteProductInput,
   condition?: ModelProductConditionInput | null,
 };
 
@@ -459,7 +475,7 @@ export type DeleteProductMutation = {
 };
 
 export type CreateCartProductMutationVariables = {
-  input?: CreateCartProductInput,
+  input: CreateCartProductInput,
   condition?: ModelCartProductConditionInput | null,
 };
 
@@ -498,7 +514,7 @@ export type CreateCartProductMutation = {
 };
 
 export type UpdateCartProductMutationVariables = {
-  input?: UpdateCartProductInput,
+  input: UpdateCartProductInput,
   condition?: ModelCartProductConditionInput | null,
 };
 
@@ -537,7 +553,7 @@ export type UpdateCartProductMutation = {
 };
 
 export type DeleteCartProductMutationVariables = {
-  input?: DeleteCartProductInput,
+  input: DeleteCartProductInput,
   condition?: ModelCartProductConditionInput | null,
 };
 
@@ -576,7 +592,7 @@ export type DeleteCartProductMutation = {
 };
 
 export type CreateOrderProductMutationVariables = {
-  input?: CreateOrderProductInput,
+  input: CreateOrderProductInput,
   condition?: ModelOrderProductConditionInput | null,
 };
 
@@ -630,7 +646,7 @@ export type CreateOrderProductMutation = {
 };
 
 export type UpdateOrderProductMutationVariables = {
-  input?: UpdateOrderProductInput,
+  input: UpdateOrderProductInput,
   condition?: ModelOrderProductConditionInput | null,
 };
 
@@ -684,7 +700,7 @@ export type UpdateOrderProductMutation = {
 };
 
 export type DeleteOrderProductMutationVariables = {
-  input?: DeleteOrderProductInput,
+  input: DeleteOrderProductInput,
   condition?: ModelOrderProductConditionInput | null,
 };
 
@@ -738,7 +754,7 @@ export type DeleteOrderProductMutation = {
 };
 
 export type CreateOrderMutationVariables = {
-  input?: CreateOrderInput,
+  input: CreateOrderInput,
   condition?: ModelOrderConditionInput | null,
 };
 
@@ -761,7 +777,7 @@ export type CreateOrderMutation = {
 };
 
 export type UpdateOrderMutationVariables = {
-  input?: UpdateOrderInput,
+  input: UpdateOrderInput,
   condition?: ModelOrderConditionInput | null,
 };
 
@@ -784,7 +800,7 @@ export type UpdateOrderMutation = {
 };
 
 export type DeleteOrderMutationVariables = {
-  input?: DeleteOrderInput,
+  input: DeleteOrderInput,
   condition?: ModelOrderConditionInput | null,
 };
 
@@ -798,6 +814,31 @@ export type DeleteOrderMutation = {
     country?: string | null,
     city?: string | null,
     address?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type GetProductQueryVariables = {
+  id: string,
+};
+
+export type GetProductQuery = {
+  getProduct?:  {
+    __typename: "Product",
+    id: string,
+    title: string,
+    description?: string | null,
+    image: string,
+    images: Array< string >,
+    options?: Array< string > | null,
+    avgRating: number,
+    ratings?: number | null,
+    price: number,
+    oldPrice?: number | null,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
@@ -838,31 +879,6 @@ export type ListProductsQuery = {
   } | null,
 };
 
-export type GetProductQueryVariables = {
-  id?: string,
-};
-
-export type GetProductQuery = {
-  getProduct?:  {
-    __typename: "Product",
-    id: string,
-    title: string,
-    description?: string | null,
-    image: string,
-    images: Array< string >,
-    options?: Array< string > | null,
-    avgRating: number,
-    ratings?: number | null,
-    price: number,
-    oldPrice?: number | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
 export type SyncProductsQueryVariables = {
   filter?: ModelProductFilterInput | null,
   limit?: number | null,
@@ -897,7 +913,7 @@ export type SyncProductsQuery = {
 };
 
 export type GetCartProductQueryVariables = {
-  id?: string,
+  id: string,
 };
 
 export type GetCartProductQuery = {
@@ -1026,7 +1042,7 @@ export type SyncCartProductsQuery = {
 };
 
 export type GetOrderProductQueryVariables = {
-  id?: string,
+  id: string,
 };
 
 export type GetOrderProductQuery = {
@@ -1199,6 +1215,28 @@ export type SyncOrderProductsQuery = {
   } | null,
 };
 
+export type GetOrderQueryVariables = {
+  id: string,
+};
+
+export type GetOrderQuery = {
+  getOrder?:  {
+    __typename: "Order",
+    id: string,
+    userSub: string,
+    fullname: string,
+    phoneNumber?: string | null,
+    country?: string | null,
+    city?: string | null,
+    address?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type ListOrdersQueryVariables = {
   filter?: ModelOrderFilterInput | null,
   limit?: number | null,
@@ -1225,28 +1263,6 @@ export type ListOrdersQuery = {
     } | null > | null,
     nextToken?: string | null,
     startedAt?: number | null,
-  } | null,
-};
-
-export type GetOrderQueryVariables = {
-  id?: string,
-};
-
-export type GetOrderQuery = {
-  getOrder?:  {
-    __typename: "Order",
-    id: string,
-    userSub: string,
-    fullname: string,
-    phoneNumber?: string | null,
-    country?: string | null,
-    city?: string | null,
-    address?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
